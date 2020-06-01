@@ -4,9 +4,11 @@ import {
   HttpInterceptor,
   HttpHandler,
   HttpRequest,
+  HttpResponse,
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class NoopInterceptor implements HttpInterceptor {
@@ -15,8 +17,12 @@ export class NoopInterceptor implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     console.log('################');
-    console.log(req);
-    console.log('################');
-    return next.handle(req);
+    console.log(req.url);
+    return next.handle(req).pipe(
+      tap((res: HttpResponse<{}>) => {
+        console.log('$$$$$$$$$$$$$$$$');
+        console.log(res.body);
+      }),
+    );
   }
 }
