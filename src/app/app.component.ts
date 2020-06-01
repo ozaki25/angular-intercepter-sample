@@ -12,17 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private service: ApiService) {}
 
   ngOnInit() {
-    this.service.getJson().subscribe(res => {
-      console.log(res);
-      res.headers
-        .keys()
-        .map(key => console.log(`${key}: ${res.headers.get(key)}`));
-    });
-    this.service.getHtml().subscribe(res => {
-      console.log(res);
-      res.headers
-        .keys()
-        .map(key => console.log(`${key}: ${res.headers.get(key)}`));
-    });
+    this.service.getJson().subscribe(res => console.log(res));
+    this.service.getHtml().subscribe(res => console.log(res));
   }
 }
