@@ -5,10 +5,11 @@ import {
   HttpHandler,
   HttpRequest,
   HttpResponse,
+  HttpErrorResponse,
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class NoopInterceptor implements HttpInterceptor {
@@ -22,6 +23,14 @@ export class NoopInterceptor implements HttpInterceptor {
       tap((res: HttpResponse<{}>) => {
         console.log('$$$$$$$$$$$$$$$$');
         console.log(res.body);
+      }),
+      catchError((res: HttpErrorResponse) => {
+        console.log(res);
+        if (res.headers.get('content-type').startsWith('text/html')) {
+          console.log(res.error.text);
+          document.body.innerHTML = res.error.text;
+        }
+        return of(null);
       }),
     );
   }
